@@ -1,8 +1,8 @@
 const express = require("express");
 const { getDashboardMetrics } = require("../controllers/dashboardController");
-const { protect } = require("../middleware/authMiddleware"); // Ensure only admins can access
+const authMiddleware  = require("../middleware/authMiddleware"); 
 const router = express.Router();
 
-router.get("/metrics", protect, getDashboardMetrics);
+router.get("/metrics", authMiddleware, getDashboardMetrics);
 
 module.exports = router;
