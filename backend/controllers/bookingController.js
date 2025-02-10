@@ -29,7 +29,8 @@ exports.createBooking = async (req, res) => {
 // Get All Bookings
 exports.getBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find({ user: req.user.id }); // Filter by logged-in user
+        // Fetch only the bookings for the logged-in user and populate the user name
+        const bookings = await Booking.find({ user: req.user.id }).populate("user", "name");
         res.json(bookings);
     } catch (error) {
         console.error(error);
