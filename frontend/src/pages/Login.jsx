@@ -18,12 +18,11 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="mt-5">
       <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
       <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
       <button type="submit">Login</button>
       {error && <p>{error}</p>}
-      <h3 className="text-6xl text-red-700">This is a text</h3>
     </form>
   );
 };

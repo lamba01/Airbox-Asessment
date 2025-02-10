@@ -10,6 +10,16 @@ export const loginUser = async (credentials) => {
       withCredentials: true, // Ensure cookies are included if needed
     });
 
+        // ✅ Store token & user ID in localStorage
+        const { token, user } = response.data;
+        if (token) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("userId", user?._id); // Ensure you save user ID for bookings
+        }
+    
+    console.log('login successfuls')
+    console.log(localStorage.getItem("token"));
+    console.log(localStorage.getItem("userId"));
     return response.data;
    
   } catch (error) {

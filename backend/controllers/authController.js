@@ -42,10 +42,13 @@ exports.loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Invalid password" });
 
-        // Generate token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        // // Generate token
+        // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-        res.json({ token });
+        // res.json({ token });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+
+        res.json({ token, user: { _id: user._id, name: user.name, email: user.email } });
     } catch (error) {
         res.status(500).json({ message: "Server Error" });
     }
@@ -54,9 +57,8 @@ exports.loginUser = async (req, res) => {
 // Get User Profile
 exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.userId).select("-password");
+        const user = await User.findById(req.user.id).select("-password");
         if (!user) return res.status(404).json({ message: "User not found" });
-
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: "Server Error" });

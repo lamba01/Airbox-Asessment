@@ -11,12 +11,11 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// Create a booking with validation
+// Create a booking (Requires Authentication)
 router.post(
     "/",
     authMiddleware,
     [
-        check("user", "User ID is required").not().isEmpty(),
         check("service", "Service name is required").not().isEmpty(),
         check("date", "Valid date is required").isISO8601(),
         check("timeSlot", "Time slot is required").not().isEmpty()
@@ -30,10 +29,10 @@ router.post(
     }
 );
 
-// Get all bookings
+// Get all bookings for the logged-in user
 router.get("/", authMiddleware, getBookings);
 
-// Get a specific booking by ID
+// Get a specific booking by ID (Ensuring it belongs to the logged-in user)
 router.get("/:id", authMiddleware, getBookingById);
 
 // Update a booking
