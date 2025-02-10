@@ -4,7 +4,10 @@ This is an MVP scheduling interface and admin dashboard for Airbox. The project 
 
 ## **Project Structure**
 
-/project-root │── frontend/ # React frontend (Vite + Tailwind) │── backend/ # Node.js + Express + MongoDB backend │── README.md │── .gitignore
+/Airbox-Asessment
+│── frontend/ # React frontend (Vite + Tailwind)
+│── backend/ # Node.js + Express + MongoDB backend
+│── README.md
 
 ## **Technologies Used**
 
@@ -28,12 +31,12 @@ This is an MVP scheduling interface and admin dashboard for Airbox. The project 
 ### **1. Clone the Repository**
 
 ```sh
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/lamba01/Airbox-Asessment.git
+cd Airbox-Asessment
 
 cd backend
 npm install
-cp .env.example .env  # Update with your MongoDB URI
+cp .env.example .env
 npm run dev  # Starts the backend server
 
 
