@@ -11,6 +11,7 @@ const Booking = () => {
   const [editBooking, setEditBooking] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedBookingId, setSelectedBookingId] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [formData, setFormData] = useState({
     service: "Haircut",
@@ -24,18 +25,23 @@ const Booking = () => {
 
   const fetchBookings = async () => {
     const token = localStorage.getItem("token");
+
     try {
-      const response = await fetch("http://localhost:5000/api/bookings", {
+      const response = await fetch("http://localhost:5000/api/bookings/user", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (!response.ok) {
+          throw new Error("Failed to fetch user bookings");
+      }
+
       const data = await response.json();
       setBookings(data.bookings);
-      console.log(data.bookings)
     } catch (error) {
-      console.error("Error fetching bookings:", error);
+      console.error("Error fetching user bookings:", error);
     }
-  };
+};
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -74,8 +80,11 @@ const handleSubmit = async (e) => {
       const newBooking = await response.json();
       setBookings([...bookings, newBooking]);
       setFormData({ service: "Haircut", timeSlot: "", price: "" });
-
-
+      setShowSuccessModal(true); // Show the success modal
+      // Hide the modal after 3 seconds
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 3000);
     } catch (error) {
       console.error("Error creating booking:", error);
     }
@@ -262,14 +271,28 @@ const handleCancel = async (bookingId) => {
   </tbody>
 </table>
 
-      {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
-        <DeleteModal
-          isOpen={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          onConfirm={confirmDelete}
-        />
-      )}
+{/* Success Modal */}
+  {showSuccessModal && (
+    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-green-600 font-semibold text-lg">
+          Booking Successful!
+        </h2>
+        <p>Your appointment has been booked.</p>
+      </div>
+    </div>
+  )}
+
+
+
+{/* Delete Confirmation Modal */}
+ {showDeleteModal && (
+    <DeleteModal
+      isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDelete}
+    />
+  )}
 
 {editBooking && (
   <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center">

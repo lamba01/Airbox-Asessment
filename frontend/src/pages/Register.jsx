@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const { register } = useContext(AuthContext);
@@ -7,12 +8,14 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
       await register({ name, email, password });
+      navigate("/login")
     } catch (err) {
       setError(err.message);
     }

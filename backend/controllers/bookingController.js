@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Booking = require("../models/Booking");
 
 // Create a new booking
@@ -26,12 +27,20 @@ exports.createBooking = async (req, res) => {
   };
   
 
-// Get All Bookings
+// get all bookings
 exports.getBookings = async (req, res) => {
     try {
-        // Fetch only the bookings for the logged-in user and populate the user name
-        const bookings = await Booking.find({ user: req.user.id }).populate("user", "name");
-        res.json({bookings, role: req.user.role});
+        let bookings;
+
+        if (req.user.role === "admin") {
+            // Admin gets all bookings
+            bookings = await Booking.find().populate("user", "name");
+        } else {
+            // Regular users get only their bookings
+            bookings = await Booking.find({ user: req.user.id }).populate("user", "name");
+        }
+
+        res.json({ bookings, role: req.user.role });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
@@ -52,6 +61,24 @@ exports.getBookingById = async (req, res) => {
         }
 
         res.json(booking);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+};
+
+
+// Get all bookings for a specific user
+exports.getUserBookings = async (req, res) => {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.user.id);
+        const bookings = await Booking.find({ user: userId }).populate("user", "name");
+
+        if (!bookings.length) {
+            return res.status(404).json({ message: "No bookings found for this user" });
+        }
+
+        res.json({ bookings });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });

@@ -27,9 +27,9 @@ const AdminDashboard = () => {
       const response = await axios.get("http://localhost:5000/api/bookings", {
         headers: { Authorization: `Bearer ${token}` }, // Attach token
       });
-      setBookings(response.data); // Ensure it's always an array
+      console.log(response.data.bookings)
+      setBookings(response.data.bookings); // Ensure it's always an array
       setRole(response.data.role || null);
-      console.log(response.data)
     } catch (error) {
       console.error("Error fetching bookings:", error.response?.data || error.message);
     } finally {

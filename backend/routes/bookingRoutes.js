@@ -3,12 +3,12 @@ const { check, validationResult } = require("express-validator");
 const { 
     createBooking, 
     getBookings, 
+    getUserBookings,
     getBookingById, 
     updateBooking, 
     deleteBooking 
 } = require("../controllers/bookingController");
 const authMiddleware = require("../middleware/authMiddleware");
-
 const router = express.Router();
 
 // Create a booking (Requires Authentication)
@@ -29,8 +29,16 @@ router.post(
     }
 );
 
-// Get all bookings for the logged-in user
+// Get all bookings for the logged-in Admin
 router.get("/", authMiddleware, getBookings);
+
+// Fetch bookings for the logged-in user
+// router.get("/user", authMiddleware, getUserBookings);
+router.get("/user", authMiddleware, (req, res) => {
+    console.log("Received request for user bookings", req.user);
+    getUserBookings(req, res);
+});
+
 
 // Get a specific booking by ID (Ensuring it belongs to the logged-in user)
 router.get("/:id", authMiddleware, getBookingById);
@@ -42,3 +50,4 @@ router.put("/:id", authMiddleware, updateBooking);
 router.delete("/:id", authMiddleware, deleteBooking);
 
 module.exports = router;
+
