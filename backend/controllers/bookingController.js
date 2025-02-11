@@ -31,7 +31,7 @@ exports.getBookings = async (req, res) => {
     try {
         // Fetch only the bookings for the logged-in user and populate the user name
         const bookings = await Booking.find({ user: req.user.id }).populate("user", "name");
-        res.json(bookings);
+        res.json({bookings, role: req.user.role});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });

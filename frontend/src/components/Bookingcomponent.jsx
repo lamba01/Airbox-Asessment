@@ -30,7 +30,8 @@ const Booking = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
-      setBookings(data);
+      setBookings(data.bookings);
+      console.log(data.bookings)
     } catch (error) {
       console.error("Error fetching bookings:", error);
     }
@@ -85,6 +86,7 @@ const handleSubmit = async (e) => {
       return new Date(booking.date).toDateString() === date.toDateString();
     });
   };  
+  
   
 const handleEdit = (booking) => {
     setEditBooking(booking);    

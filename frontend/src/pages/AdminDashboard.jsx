@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
@@ -11,6 +12,9 @@ const AdminDashboard = () => {
     totalRevenue: 0,
     peakTimes: [],
   });
+  const [role, setRole] = useState(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     fetchBookings();
@@ -23,7 +27,8 @@ const AdminDashboard = () => {
       const response = await axios.get("http://localhost:5000/api/bookings", {
         headers: { Authorization: `Bearer ${token}` }, // Attach token
       });
-      setBookings(response.data);
+      setBookings(response.data); // Ensure it's always an array
+      setRole(response.data.role || null);
       console.log(response.data)
     } catch (error) {
       console.error("Error fetching bookings:", error.response?.data || error.message);
@@ -31,6 +36,17 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
+
+  // Redirect non-admin users
+  useEffect(() => {
+    if (role === "admin") return; // Allow access if admin
+  
+    if (role && role !== "admin") {
+      navigate("/"); // Redirect only if role is explicitly non-admin
+    }
+  }, [role, navigate]);
+  
+
 
   const fetchMetrics = async () => {
     try {
