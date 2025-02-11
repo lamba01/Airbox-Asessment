@@ -17,9 +17,9 @@ function Services() {
   const [activeService, setActiveService] = useState("Facial");
 
   return (
-    <section className="w-full flex items-center flex-col gap-5 bg-[#E8A9C3] m-0 p-10 text-center">
+    <section className="w-full flex  items-center flex-col gap-5 bg-[#E8A9C3] m-0 p-10 text-center">
       <h2 className="text-2xl font-bold capitalize">What are you looking for?</h2>
-      <aside className="flex gap-10 mt-5 items-center justify-center">
+      <aside className="flex flex-col sm:flex-row gap-10 mt-5 items-center justify-center">
         {servicesData.map((service) => (
           <div 
             key={service.id} 
