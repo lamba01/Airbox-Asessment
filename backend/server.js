@@ -15,14 +15,19 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(
-    cors({
-      origin: "https://airbox-asessment.vercel.app", // Frontend URL
-      credentials: true, // Allow cookies and authentication headers
-      methods: "GET,POST,PUT,DELETE",
-      allowedHeaders: "Content-Type,Authorization",
-    })
-  );
+// app.use(
+//     cors({
+//       origin: "https://airbox-asessment.vercel.app", // Frontend URL
+//       credentials: true, 
+//       methods: "GET,POST,PUT,DELETE",
+//       allowedHeaders: ["Content-Type, Authorization"],
+//     })
+//   );
+const corsOptions = {
+  origin: "https://airbox-asessment.vercel.app",
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(errorHandler);
 
