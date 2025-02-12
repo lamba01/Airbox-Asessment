@@ -1,4 +1,3 @@
-// import dotenv from "dotenv";
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -15,23 +14,12 @@ const app = express();
 connectDB();
 
 // Middleware
-// app.use(
-//     cors({
-//       origin: "https://airbox-asessment.vercel.app", // Frontend URL
-//       credentials: true, 
-//       methods: "GET,POST,PUT,DELETE",
-//       allowedHeaders: ["Content-Type, Authorization"],
-//     })
-//   );
 const corsOptions = {
-  origin: "*", // Allow all origins
+  origin: "https://airbox-asessment.vercel.app", 
   credentials: true,
-  methods: "GET,POST,PUT,DELETE",
-  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 app.use(errorHandler);
 
@@ -46,5 +34,5 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
 // Start Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
