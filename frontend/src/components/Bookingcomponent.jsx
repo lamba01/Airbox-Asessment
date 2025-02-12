@@ -364,9 +364,14 @@ const Booking = forwardRef((props, ref) => {
                 <select
                   name="service"
                   value={editBooking.service}
-                  onChange={(e) =>
-                    setEditBooking({ ...editBooking, service: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const newService = e.target.value;
+                    setEditBooking((prev) => ({
+                      ...prev,
+                      service: newService,
+                      price: servicePrices[newService] || "", // Update price dynamically
+                    }));
+                  }}
                   className="w-full p-2 border rounded"
                 >
                   <option value="Haircut">Haircut</option>
@@ -399,7 +404,7 @@ const Booking = forwardRef((props, ref) => {
                 <input
                   type="number"
                   name="price"
-                  value={formData.price}
+                  value={editBooking.price}
                   className="w-full p-2 border rounded bg-gray-200"
                   readOnly
                 />
