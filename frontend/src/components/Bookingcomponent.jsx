@@ -28,10 +28,13 @@ const Booking = forwardRef((props, ref) => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:5000/api/bookings/user", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        "https://airbox-asessment-server.vercel.app/api/bookings/user",
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch user bookings");
@@ -60,18 +63,21 @@ const Booking = forwardRef((props, ref) => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/bookings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...formData,
-          date: selectedDate,
-          user: userId, // ✅ Send user ID
-        }),
-      });
+      const response = await fetch(
+        "https://airbox-asessment-server.vercel.app/api/bookings",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...formData,
+            date: selectedDate,
+            user: userId, // ✅ Send user ID
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -111,7 +117,7 @@ const Booking = forwardRef((props, ref) => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/${updatedBooking._id}`,
+        `https://airbox-asessment-server.vercel.app/api/bookings/${updatedBooking._id}`,
         updatedBooking,
         {
           headers: {
@@ -146,7 +152,7 @@ const Booking = forwardRef((props, ref) => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `http://localhost:5000/api/bookings/${selectedBookingId}`,
+        `https://airbox-asessment-server.vercel.app/api/bookings/${selectedBookingId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

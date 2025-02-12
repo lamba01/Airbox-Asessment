@@ -23,9 +23,12 @@ const AdminDashboard = () => {
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem("token"); // Retrieve stored token
-      const response = await axios.get("http://localhost:5000/api/bookings", {
-        headers: { Authorization: `Bearer ${token}` }, // Attach token
-      });
+      const response = await axios.get(
+        "https://airbox-asessment-server.vercel.app/api/bookings",
+        {
+          headers: { Authorization: `Bearer ${token}` }, // Attach token
+        }
+      );
       console.log(response.data.bookings);
       setBookings(response.data.bookings); // Ensure it's always an array
       setRole(response.data.role || null);
@@ -52,7 +55,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/dashboard/metrics",
+        "https://airbox-asessment-server.vercel.app/api/dashboard/metrics",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -67,7 +70,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/bookings/${id}`,
+        `https://airbox-asessment-server.vercel.app/api/bookings/${id}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

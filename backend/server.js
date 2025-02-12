@@ -17,7 +17,7 @@ connectDB();
 // Middleware
 app.use(
     cors({
-      origin: "http://localhost:5173", // Frontend URL
+      origin: "https://airbox-asessment.vercel.app", // Frontend URL
       credentials: true, // Allow cookies and authentication headers
       methods: "GET,POST,PUT,DELETE",
       allowedHeaders: "Content-Type,Authorization",
@@ -25,6 +25,10 @@ app.use(
   );
 app.use(express.json());
 app.use(errorHandler);
+
+app.get("/", (req, res) => {
+  res.send("Api is running!");
+});
 
 // Routes
 app.use("/api/auth", authRoutes);

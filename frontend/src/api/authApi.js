@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://airbox-asessment-server.vercel.app";
 
 export const loginUser = async (credentials) => {
   try {
