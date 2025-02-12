@@ -234,17 +234,17 @@ const Booking = forwardRef((props, ref) => {
         </form>
       </div>
 
-      <div className="bg-gray-200 p-5 overflow-auto max-w-full">
+      <div className="bg-gray-200 p-5 pb-10 overflow-auto max-w-full">
         <h3 className="text-2xl font-bold capitalize py-6">Your Bookings</h3>
-        <table className="w-full mt-4 border bg-gray-200">
+        <table className="w-full mt-4 bg-gray-200 border-collapse border border-black">
           <thead>
             <tr>
-              <th className="p-2">Service</th>
-              <th className="p-2">Date</th>
-              <th className="p-2">Time Slot</th>
-              <th className="p-2">Price</th>
-              <th className="p-2">Status</th>
-              <th className="p-2">Actions</th>
+              <th className="border p-2">Service</th>
+              <th className="border p-2">Date</th>
+              <th className="border p-2">Time</th>
+              <th className="border p-2">Price</th>
+              <th className="border p-2">Status</th>
+              <th className="border p-2">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -261,18 +261,20 @@ const Booking = forwardRef((props, ref) => {
 
                 return (
                   <tr key={booking._id} className="text-center border-b">
-                    <td className="p-2">{booking.service}</td>
-                    <td className="p-2">{bookingDate.toLocaleDateString()}</td>
-                    <td className="p-2">{booking.timeSlot}</td>
-                    <td className="p-2">${booking.price}</td>
-                    <td className="p-2">{booking.status}</td>
-                    <td className="p-2 flex justify-center gap-2">
+                    <td className="border p-2">{booking.service}</td>
+                    <td className="border p-2">
+                      {bookingDate.toLocaleDateString()}
+                    </td>
+                    <td className="border p-2">{booking.timeSlot}</td>
+                    <td className="border p-2">${booking.price}</td>
+                    <td className="border p-2">{booking.status}</td>
+                    <td className=" p-2 flex items-center justify-center gap-2">
                       {/* Edit Button */}
                       <button
-                        className={`px-4 py-1 rounded cursor-pointer hover:opacity-40 ${
+                        className={`px-4 py-1 rounded ${
                           isDisabled
                             ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-blue-500 hover:bg-blue-600 text-white"
+                            : "bg-blue-500 hover:bg-blue-600 text-white cursor-pointer hover:opacity-40"
                         }`}
                         onClick={() => !isDisabled && handleEdit(booking)}
                         disabled={isDisabled}
@@ -282,10 +284,10 @@ const Booking = forwardRef((props, ref) => {
 
                       {/* Cancel Button */}
                       <button
-                        className={`px-4 py-1 rounded cursor-pointer  hover:opacity-40 ${
+                        className={`px-4 py-1 rounded ${
                           isDisabled
                             ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-red-500 hover:bg-red-600 text-white"
+                            : "bg-red-500 hover:bg-red-600 text-white cursor-pointer  hover:opacity-40"
                         }`}
                         onClick={() => !isDisabled && handleCancel(booking._id)}
                         disabled={isDisabled}

@@ -15,7 +15,6 @@ const AdminDashboard = () => {
   const [role, setRole] = useState(null);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     fetchBookings();
     fetchMetrics();
@@ -27,11 +26,14 @@ const AdminDashboard = () => {
       const response = await axios.get("http://localhost:5000/api/bookings", {
         headers: { Authorization: `Bearer ${token}` }, // Attach token
       });
-      console.log(response.data.bookings)
+      console.log(response.data.bookings);
       setBookings(response.data.bookings); // Ensure it's always an array
       setRole(response.data.role || null);
     } catch (error) {
-      console.error("Error fetching bookings:", error.response?.data || error.message);
+      console.error(
+        "Error fetching bookings:",
+        error.response?.data || error.message
+      );
     } finally {
       setLoading(false);
     }
@@ -40,20 +42,21 @@ const AdminDashboard = () => {
   // Redirect non-admin users
   useEffect(() => {
     if (role === "admin") return; // Allow access if admin
-  
+
     if (role && role !== "admin") {
       navigate("/"); // Redirect only if role is explicitly non-admin
     }
   }, [role, navigate]);
-  
-
 
   const fetchMetrics = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/dashboard/metrics", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "http://localhost:5000/api/dashboard/metrics",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setMetrics(response.data);
     } catch (error) {
       console.error("Error fetching metrics", error);
@@ -74,49 +77,64 @@ const AdminDashboard = () => {
         prev.map((b) => (b._id === id ? { ...b, status: newStatus } : b))
       );
     } catch (error) {
-      console.error("Error updating booking status:", error.response?.data || error.message);
+      console.error(
+        "Error updating booking status:",
+        error.response?.data || error.message
+      );
     }
   };
 
   const chartData = {
-    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    labels: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
     datasets: [
       {
         label: "Bookings per Day",
-        data: bookings.reduce((acc, booking) => {
-          const dayIndex = new Date(booking.date).getDay();
-          acc[dayIndex] += 1;
-          return acc;
-        }, [0, 0, 0, 0, 0, 0, 0]), // Only real data, no dummy fallback
+        data: bookings.reduce(
+          (acc, booking) => {
+            const dayIndex = new Date(booking.date).getDay();
+            acc[dayIndex] += 1;
+            return acc;
+          },
+          [0, 0, 0, 0, 0, 0, 0]
+        ), // Only real data, no dummy fallback
         backgroundColor: "rgba(54, 162, 235, 0.6)",
       },
     ],
   };
-  
+
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
       {/* Metrics */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="p-4 bg-blue-500 text-white rounded-lg shadow-md">
+      <div className="grid grid-cols-3 sm:w-auto gap-4 mb-6">
+        <div className="p-4 bg-blue-500 text-white  rounded-lg shadow-md">
           Total Bookings: {metrics.totalBookings}
         </div>
-        <div className="p-4 bg-green-500 text-white rounded-lg shadow-md">
+        <div className="p-4 bg-green-500 text-white  rounded-lg shadow-md">
           Weekly Revenue: ${metrics.totalRevenue}
         </div>
         <div className="p-4 bg-yellow-500 text-white rounded-lg shadow-md">
-          Peak Slot: {metrics.peakTimes.length ? metrics.peakTimes[0]._id : "N/A"}
+          Peak Slot:{" "}
+          {metrics.peakTimes.length ? metrics.peakTimes[0]._id : "N/A"}
         </div>
       </div>
 
       {/* Chart */}
-      <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+      <div className="bg-white w-screen sm:w-full p-4 rounded-lg shadow-md mb-6">
         <Bar data={chartData} />
       </div>
 
       {/* Bookings Table */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
+      <div className="bg-white p-4 rounded-lg shadow-md  overflow-auto max-w-full">
         <h2 className="text-lg font-semibold mb-3">Upcoming Bookings</h2>
         {loading ? (
           <p>Loading...</p>
@@ -126,31 +144,41 @@ const AdminDashboard = () => {
               <tr className="bg-gray-200">
                 <th className="border p-2">User</th>
                 <th className="border p-2">Date</th>
+                <th className="border p-2">Time</th>
+                <th className="border p-2">Price</th>
                 <th className="border p-2">Status</th>
                 <th className="border p-2">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-center">
               {bookings.map((booking) => (
                 <tr key={booking._id} className="border">
                   <td className="border p-2">{booking.user.name}</td>
-                  <td className="border p-2">{new Date(booking.date).toLocaleDateString()}</td>
-                  <td className="border p-2">{booking.status}</td>
                   <td className="border p-2">
+                    {new Date(booking.date).toLocaleDateString()}
+                  </td>
+                  <td className="border p-2">{booking.timeSlot}</td>
+                  <td className="border p-2">${booking.price}</td>
+                  <td className="border p-2">{booking.status}</td>
+                  <td className="border p-2 flex justify-center gap-2">
                     <button
                       className={`px-3 py-1 rounded mr-2 ${
                         booking.status === "Confirmed"
                           ? "bg-gray-400 cursor-not-allowed"
-                          : "bg-green-500 text-white"
+                          : "bg-green-500 text-white cursor-pointer"
                       }`}
-                      onClick={() => handleStatusChange(booking._id, "Confirmed")}
+                      onClick={() =>
+                        handleStatusChange(booking._id, "Confirmed")
+                      }
                       disabled={booking.status === "Confirmed"} // Disable when confirmed
                     >
                       Confirm
                     </button>
                     <button
-                      className="bg-red-500 text-white px-3 py-1 rounded"
-                      onClick={() => handleStatusChange(booking._id, "Canceled")}
+                      className="bg-red-500 text-white px-3 py-1 rounded cursor-pointer"
+                      onClick={() =>
+                        handleStatusChange(booking._id, "Canceled")
+                      }
                     >
                       Cancel
                     </button>
