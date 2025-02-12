@@ -19,6 +19,12 @@ const Booking = forwardRef((props, ref) => {
     timeSlot: "",
     price: "",
   });
+  const servicePrices = {
+    Haircut: 100,
+    "Lashes & brows": 120,
+    Makeup: 150,
+    Manicure: 130,
+  };
 
   useEffect(() => {
     fetchBookings();
@@ -48,7 +54,13 @@ const Booking = forwardRef((props, ref) => {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "service" && { price: servicePrices[value] || "" }), // Auto-update price when service is selected
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -217,16 +229,15 @@ const Booking = forwardRef((props, ref) => {
             />
           </div>
 
-          {/* Price */}
+          {/* Price (Auto-filled) */}
           <div>
             <label className="block font-medium text-start">Price ($)</label>
             <input
               type="number"
               name="price"
               value={formData.price}
-              onChange={handleChange}
               className="w-full p-2 border rounded bg-gray-200"
-              required
+              readOnly
             />
           </div>
 
@@ -380,20 +391,20 @@ const Booking = forwardRef((props, ref) => {
                 />
               </div>
 
-              {/* Price */}
+              {/* Price (Auto-filled) */}
               <div>
-                <label className="block font-medium">Price ($)</label>
+                <label className="block font-medium text-start">
+                  Price ($)
+                </label>
                 <input
                   type="number"
                   name="price"
-                  value={editBooking.price}
-                  onChange={(e) =>
-                    setEditBooking({ ...editBooking, price: e.target.value })
-                  }
-                  className="w-full p-2 border rounded"
-                  required
+                  value={formData.price}
+                  className="w-full p-2 border rounded bg-gray-200"
+                  readOnly
                 />
               </div>
+
               {/* Action Buttons */}
               <div className="flex justify-between">
                 <button

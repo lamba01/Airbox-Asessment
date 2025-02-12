@@ -19,7 +19,7 @@ const HeroSection = ({ bookingRef }) => {
         </h1>
         <button
           onClick={handleScrollToBooking}
-          className="mt-6 px-6 py-2 text-sm font-medium bg-transparent cursor-pointer border-white border-2 hover:bg-black hover:border-black text-white rounded-sm"
+          className="mt-6 px-6 py-2 text-sm font-medium bg-transparent cursor-pointer border-white border-2 hover:border-[#A10550] hover:bg-[#A10550] text-white rounded-sm"
         >
           Book Now
         </button>
