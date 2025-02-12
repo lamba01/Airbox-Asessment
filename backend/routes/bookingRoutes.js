@@ -33,9 +33,7 @@ router.post(
 router.get("/", authMiddleware, getBookings);
 
 // Fetch bookings for the logged-in user
-// router.get("/user", authMiddleware, getUserBookings);
 router.get("/user", authMiddleware, (req, res) => {
-    console.log("Received request for user bookings", req.user);
     getUserBookings(req, res);
 });
 
