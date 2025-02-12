@@ -70,6 +70,14 @@ Limitations
 - No real-time updates (WebSockets not implemented).
 - No payment integration.
 
+## Admin Access
+
+To access the admin dashboard, use the following credentials:
+
+**URL:** [[Live Project Admin Page Path](https://airbox-asessment.vercel.app/admin)]  
+**Email:** admin@example.com  
+**Password:** admins
+
 Brief Security Measures Implemented
 
 - JWT Authentication → Ensures secure access to protected routes.
