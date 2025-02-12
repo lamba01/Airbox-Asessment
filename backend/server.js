@@ -24,10 +24,14 @@ connectDB();
 //     })
 //   );
 const corsOptions = {
-  origin: "https://airbox-asessment.vercel.app",
+  origin: "*", // Allow all origins
   credentials: true,
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
+
 app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(errorHandler);
 
