@@ -204,7 +204,7 @@ const Booking = forwardRef((props, ref) => {
           </div>
 
           {/* Time Slot */}
-          <div>
+          <div className="w-full">
             <label className="block font-medium text-start">Time Slot</label>
             <input
               type="time"
